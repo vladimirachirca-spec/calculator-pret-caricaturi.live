@@ -3,207 +3,252 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Calculator preț – caricatură / portret</title>
-
+  <title>Calculator preț – caricaturi.live</title>
   <style>
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      margin: 0;
-      background: #f6f6f6;
-    }
-    .wrap {
-      max-width: 860px;
-      margin: 24px auto;
-      padding: 16px;
-    }
-    .card {
-      background: #fff;
-      border: 1px solid #e6e6e6;
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 6px 18px rgba(0,0,0,.06);
-    }
-    h1 { font-size: 22px; margin: 0 0 6px; }
-    .muted { color:#666; margin-bottom:14px; line-height:1.35; }
-    .grid {
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    label { font-weight:650; margin-bottom:6px; display:block; }
-    select, input[type="number"] {
-      width:100%;
-      padding:10px 12px;
-      border:1px solid #ddd;
-      border-radius:12px;
-      font-size:16px;
-    }
-    .row { margin-top:12px; }
-    .checks {
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px 18px;
-      align-items:center;
-    }
-    .checks label {
-      font-weight:500;
-      display:flex;
-      gap:8px;
-      align-items:center;
-      margin:0;
-    }
-    .pill {
-      padding:3px 10px;
-      border:1px solid #eee;
-      border-radius:999px;
-      background:#fafafa;
-      font-size:13px;
-    }
-    .warn {
-      display:none;
-      background:#fff3cd;
-      border:1px solid #ffeeba;
-      color:#6b5200;
-      padding:10px 12px;
-      border-radius:12px;
-      margin-top:12px;
-    }
-    .total {
-      font-size:36px;
-      font-weight:850;
-      margin-top:8px;
-    }
-    .break {
-      margin-top:8px;
-      font-size:14px;
-      color:#333;
-      line-height:1.35;
-    }
-    @media (max-width:720px){
-      .grid { grid-template-columns:1fr; }
-    }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#f6f6f6; }
+    .wrap { max-width: 860px; margin: 24px auto; padding: 16px; }
+    .card { background: #fff; border: 1px solid #e6e6e6; border-radius: 14px; padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+    h1 { font-size: 20px; margin: 0 0 6px; }
+    .muted { color:#666; margin: 0 0 14px; line-height: 1.35; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label { display:block; font-weight: 650; margin-bottom: 6px; }
+    select, input[type="number"] { width:100%; padding: 10px 12px; border:1px solid #ddd; border-radius: 12px; font-size: 16px; background: #fff; }
+    .row { margin-top: 12px; }
+    .checks { display:flex; flex-wrap: wrap; gap: 10px 18px; align-items:center; }
+    .checks label { font-weight: 500; margin:0; display:flex; gap:8px; align-items:center; }
+    .pill { display:inline-block; padding: 2px 10px; border:1px solid #eee; border-radius: 999px; background:#fafafa; font-size: 13px; color:#444; }
+    .total { font-size: 36px; font-weight: 850; letter-spacing: -0.5px; }
+    .break { color:#333; line-height: 1.35; margin-top: 8px; font-size: 14px; }
+    .warn { background:#fff3cd; border:1px solid #ffeeba; color:#6b5200; padding:10px 12px; border-radius: 12px; margin-top: 12px; display:none; }
+    .actions { display:flex; gap:10px; flex-wrap: wrap; margin-top: 14px; }
+    button { border: 1px solid #ddd; background:#fff; padding: 10px 12px; border-radius: 12px; cursor:pointer; font-weight:650; }
+    button.primary { background:#111; color:#fff; border-color:#111; }
+    .footer { margin-top: 10px; font-size: 12px; color:#666; }
+    @media (max-width: 720px){ .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
-
 <body>
-<div class="wrap">
-  <div class="card">
+  <div class="wrap">
+    <div class="card">
+      <h1>Calculator preț – caricatură / portret după fotografie</h1>
+      <p class="muted">
+        Prețul se calculează instant, în funcție de opțiuni. Tipul (caricatură/portret) nu influențează prețul.
+      </p>
 
-    <h1>Calculator preț – caricatură / portret</h1>
-    <p class="muted">
-      Preț estimativ calculat instant, în funcție de opțiuni.
-      Tipul lucrării nu influențează prețul.
-    </p>
+      <div class="grid">
+        <div>
+          <label for="tip">Tip lucrare</label>
+          <select id="tip">
+            <option value="caricatura">caricatură</option>
+            <option value="portret">portret</option>
+          </select>
+        </div>
 
-    <div class="grid">
+        <div>
+          <label for="culoare">Alb-negru sau color?</label>
+          <select id="culoare">
+            <option value="bw">alb/negru</option>
+            <option value="color">color</option>
+          </select>
+        </div>
 
-      <div>
-        <label>Alb-negru sau color</label>
-        <select id="culoare">
-          <option value="bw">Alb / negru</option>
-          <option value="color">Color</option>
-        </select>
+        <div>
+          <label for="format">Format / dimensiune</label>
+          <select id="format">
+            <option value="A4">A4 (max 1 persoană)</option>
+            <option value="A3">A3 (max 3 persoane)</option>
+            <option value="A2">A2 (max 6 persoane)</option>
+            <option value="A1">A1 (max 10 persoane)</option>
+          </select>
+          <div class="footer">Formatul impune doar limita de persoane; prețul crește din cauza numărului de personaje.</div>
+        </div>
+
+        <div>
+          <label for="pers">Număr persoane</label>
+          <input id="pers" type="number" min="1" step="1" value="1" />
+          <div class="footer">Persoane extra: +75% din prețul primei persoane / persoană.</div>
+        </div>
       </div>
 
-      <div>
-        <label>Format</label>
-        <select id="format">
-          <option value="A4">A4 (max 1 persoană)</option>
-          <option value="A3">A3 (max 3 persoane)</option>
-          <option value="A2">A2 (max 6 persoane)</option>
-          <option value="A1">A1 (max 10 persoane)</option>
-        </select>
+      <div class="row">
+        <div class="checks">
+          <label><input id="detaliat" type="checkbox" /> Detaliat (+50% din baza culorii)</label>
+          <label><input id="rama" type="checkbox" /> Ramă (în funcție de format)</label>
+          <span id="maxpill" class="pill"></span>
+        </div>
       </div>
 
-      <div>
-        <label>Număr persoane</label>
-        <input id="pers" type="number" min="1" value="1">
-      </div>
-
-      <div id="techRow">
-        <label>Tehnică (doar pentru color)</label>
+      <div class="row" id="techRow">
+        <label for="tech">Tehnică (doar pentru color)</label>
         <select id="tech">
-          <option value="digital">Digital (+0)</option>
-          <option value="acuarela">Acuarelă (+50)</option>
-          <option value="pastel">Pastel (+75)</option>
-          <option value="ulei">Ulei pe pânză (+300)</option>
+          <option value="digital">digital (+0)</option>
+          <option value="acuarela">acuarelă (+50)</option>
+          <option value="pastel">pastel (+75)</option>
+          <option value="ulei">ulei pe pânză (+300)</option>
         </select>
+        <div class="footer">Tehnica se aplică la prima persoană; persoanele extra sunt 75% din prețul primei persoane.</div>
       </div>
 
+      <div id="warn" class="warn"></div>
+
+      <div class="row" style="margin-top:18px">
+        <div class="muted" style="margin:0 0 4px">Total estimativ</div>
+        <div class="total" id="total">—</div>
+        <div class="break" id="breakdown"></div>
+
+        <div class="actions">
+          <button id="reset">Resetează</button>
+          <button class="primary" id="copy">Copiază rezumat</button>
+        </div>
+      </div>
     </div>
-
-    <div class="row checks">
-      <label><input type="checkbox" id="detaliat"> Detaliat (+50% din bază)</label>
-      <label><input type="checkbox" id="rama"> Ramă</label>
-      <span id="maxpill" class="pill"></span>
-    </div>
-
-    <div id="warn" class="warn"></div>
-
-    <div class="row">
-      <div class="muted">Total estimativ</div>
-      <div id="total" class="total">—</div>
-      <div id="breakdown" class="break"></div>
-    </div>
-
   </div>
-</div>
 
 <script>
-const BASE = { bw:100, color:200 };
-const TECH_ADD = { digital:0, acuarela:50, pastel:75, ulei:300 };
-const MAX_BY_FORMAT = { A4:1, A3:3, A2:6, A1:10 };
-const FRAME_BY_FORMAT = { A4:25, A3:50, A2:100, A1:200 };
+(() => {
+  // Reguli exacte (din mesajul tău)
+  const BASE = { bw: 100, color: 200 };
+  const DETAIL_MULT = 0.50;   // +50% din baza culorii (100/200)
+  const EXTRA_MULT = 0.75;    // +75% din prețul primei persoane
+  const MAX_BY_FORMAT = { A4: 1, A3: 3, A2: 6, A1: 10 };
+  const FRAME_BY_FORMAT = { A4: 25, A3: 50, A2: 100, A1: 200 };
+  const TECH_ADD = { digital: 0, acuarela: 50, pastel: 75, ulei: 300 }; // doar pentru color
 
-const culoare = document.getElementById("culoare");
-const format  = document.getElementById("format");
-const pers    = document.getElementById("pers");
-const tech    = document.getElementById("tech");
-const detaliat= document.getElementById("detaliat");
-const rama    = document.getElementById("rama");
-const techRow = document.getElementById("techRow");
-const totalEl = document.getElementById("total");
-const breakEl = document.getElementById("breakdown");
-const warnEl  = document.getElementById("warn");
-const maxpill = document.getElementById("maxpill");
+  const el = (id) => document.getElementById(id);
 
-function calc(){
-  const col = culoare.value;
-  const base = BASE[col];
-  const maxP = MAX_BY_FORMAT[format.value];
+  const tip = el("tip");
+  const culoare = el("culoare");
+  const format = el("format");
+  const pers = el("pers");
+  const detaliat = el("detaliat");
+  const rama = el("rama");
+  const techRow = el("techRow");
+  const tech = el("tech");
+  const warn = el("warn");
+  const total = el("total");
+  const breakdown = el("breakdown");
+  const maxpill = el("maxpill");
 
-  pers.max = maxP;
-  if (pers.value > maxP) pers.value = maxP;
-  if (pers.value < 1) pers.value = 1;
+  const fmtMoney = (n) => `${Math.round(n)} lei`;
 
-  maxpill.textContent = "Max persoane: " + maxP;
+  function clampPeople() {
+    const maxP = MAX_BY_FORMAT[format.value];
 
-  techRow.style.display = (col === "color") ? "block" : "none";
-  const techAdd = (col === "color") ? TECH_ADD[tech.value] : 0;
-  const detailAdd = detaliat.checked ? base * 0.5 : 0;
+    // IMPORTANT: actualizează max/min în input (altfel browserul poate bloca incorect)
+    pers.setAttribute("min", "1");
+    pers.setAttribute("max", String(maxP));
+    maxpill.textContent = `Max persoane format: ${maxP}`;
 
-  const first = base + techAdd + detailAdd;
-  const extras = (pers.value - 1) * first * 0.75;
-  const frame = rama.checked ? FRAME_BY_FORMAT[format.value] : 0;
+    let n = parseInt(pers.value, 10);
+    if (!Number.isFinite(n) || n < 1) n = 1;
 
-  const total = Math.round(first + extras + frame);
+    if (n > maxP) {
+      n = maxP;
+      warn.style.display = "block";
+      warn.textContent = `Formatul ${format.value} permite maximum ${maxP} persoane. Am setat automat numărul la ${maxP}.`;
+    } else {
+      warn.style.display = "none";
+      warn.textContent = "";
+    }
 
-  totalEl.textContent = total + " lei";
+    // scrie valoarea finală în input
+    pers.value = String(n);
+    return n;
+  }
 
-  breakEl.innerHTML =
-    "Prima persoană: " + first + " lei<br>" +
-    (pers.value > 1 ? "Persoane extra: " + Math.round(extras) + " lei<br>" : "") +
-    (rama.checked ? "Ramă: " + frame + " lei<br>" : "");
+  function compute() {
+    const n = clampPeople();
 
-}
+    const col = culoare.value; // bw / color
+    const base = BASE[col];
 
-document.querySelectorAll("select,input").forEach(el=>{
-  el.addEventListener("change",calc);
-  el.addEventListener("input",calc);
-});
+    // tehnică doar pentru color; pentru alb/negru ignorăm
+    techRow.style.display = (col === "color") ? "block" : "none";
+    const techAdd = (col === "color") ? TECH_ADD[tech.value] : 0;
 
-calc();
+    // detaliat: +50% din baza culorii (100/200)
+    const detailAdd = detaliat.checked ? (DETAIL_MULT * base) : 0;
+
+    // preț prima persoană = baza + tehnică (doar color) + detaliat
+    const firstPerson = base + techAdd + detailAdd;
+
+    // persoane extra: (n-1) * 75% din prețul primei persoane
+    const extraCount = Math.max(0, n - 1);
+    const extraEach = EXTRA_MULT * firstPerson;
+    const extras = extraCount * extraEach;
+
+    // ramă: depinde de format
+    const frame = rama.checked ? FRAME_BY_FORMAT[format.value] : 0;
+
+    const grand = firstPerson + extras + frame;
+
+    total.textContent = fmtMoney(grand);
+
+    // breakdown
+    const lines = [];
+    lines.push(`Tip lucrare: ${tip.value}`);
+    lines.push(`Bază (${col === "bw" ? "alb/negru" : "color"}): ${fmtMoney(base)}`);
+    if (col === "color") lines.push(`Tehnică (${tech.options[tech.selectedIndex].text}): +${fmtMoney(techAdd)}`);
+    if (detaliat.checked) lines.push(`Detaliat: +${fmtMoney(detailAdd)} (50% din bază)`);
+    lines.push(`Prima persoană: ${fmtMoney(firstPerson)}`);
+
+    if (extraCount > 0) {
+      lines.push(`Persoane extra: ${extraCount} × ${fmtMoney(extraEach)} = ${fmtMoney(extras)}`);
+    } else {
+      lines.push(`Persoane extra: 0`);
+    }
+
+    if (rama.checked) lines.push(`Ramă (${format.value}): +${fmtMoney(frame)}`);
+
+    breakdown.innerHTML = lines.map(s => `• ${s}`).join("<br>");
+  }
+
+  function resetAll() {
+    tip.value = "caricatura";
+    culoare.value = "bw";
+    format.value = "A4";
+    pers.value = "1";
+    detaliat.checked = false;
+    rama.checked = false;
+    tech.value = "digital";
+    compute();
+  }
+
+  function copySummary() {
+    const col = culoare.value === "bw" ? "alb/negru" : "color";
+    const n = parseInt(pers.value, 10);
+    const techText = (culoare.value === "color") ? tech.options[tech.selectedIndex].text : "creion (alb/negru)";
+    const msg =
+`Estimare comandă:
+- Tip: ${tip.value}
+- Culoare: ${col}
+- Format: ${format.value}
+- Persoane: ${n}
+- Detaliat: ${detaliat.checked ? "da" : "nu"}
+- Tehnică: ${techText}
+- Ramă: ${rama.checked ? "da" : "nu"}
+=> Total estimativ: ${total.textContent}`;
+
+    navigator.clipboard?.writeText(msg).then(() => {
+      const btn = el("copy");
+      const old = btn.textContent;
+      btn.textContent = "Copiat!";
+      setTimeout(() => btn.textContent = old, 900);
+    }).catch(() => {
+      alert(msg);
+    });
+  }
+
+  [tip, culoare, format, pers, detaliat, rama, tech].forEach(x => {
+    x.addEventListener("change", compute);
+    x.addEventListener("input", compute);
+  });
+
+  el("reset").addEventListener("click", resetAll);
+  el("copy").addEventListener("click", copySummary);
+
+  resetAll();
+})();
 </script>
 </body>
 </html>
-
