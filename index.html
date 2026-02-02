@@ -65,7 +65,7 @@
 
         <div>
           <label for="pers">Număr persoane</label>
-          <input id="pers" type="number" min="1" step="1" value="1" />
+          <input id="pers" type="number" min="1" step="1" inputmode="numeric" value="1" />
           <div class="footer">Persoane extra: +75% din prețul primei persoane / persoană.</div>
         </div>
       </div>
@@ -106,13 +106,12 @@
 
 <script>
 (() => {
-  // Reguli exacte (din mesajul tău)
   const BASE = { bw: 100, color: 200 };
-  const DETAIL_MULT = 0.50;   // +50% din baza culorii (100/200)
-  const EXTRA_MULT = 0.75;    // +75% din prețul primei persoane
+  const DETAIL_MULT = 0.50;
+  const EXTRA_MULT = 0.75;
   const MAX_BY_FORMAT = { A4: 1, A3: 3, A2: 6, A1: 10 };
   const FRAME_BY_FORMAT = { A4: 25, A3: 50, A2: 100, A1: 200 };
-  const TECH_ADD = { digital: 0, acuarela: 50, pastel: 75, ulei: 300 }; // doar pentru color
+  const TECH_ADD = { digital: 0, acuarela: 50, pastel: 75, ulei: 300 };
 
   const el = (id) => document.getElementById(id);
 
@@ -131,73 +130,93 @@
 
   const fmtMoney = (n) => `${Math.round(n)} lei`;
 
-  function clampPeople() {
+  function setMinMaxForPeople() {
     const maxP = MAX_BY_FORMAT[format.value];
-
-    // IMPORTANT: actualizează max/min în input (altfel browserul poate bloca incorect)
     pers.setAttribute("min", "1");
     pers.setAttribute("max", String(maxP));
     maxpill.textContent = `Max persoane format: ${maxP}`;
+    return maxP;
+  }
 
-    let n = parseInt(pers.value, 10);
+  // IMPORTANT: corectăm valoarea doar când userul a terminat (change/blur),
+  // nu în timp ce tastează (ca să nu “sară” pe mobil).
+  function normalizePeopleValue() {
+    const maxP = setMinMaxForPeople();
+
+    const raw = pers.value;
+    if (raw === "") {
+      // îl lăsăm gol cât tastează; totalul va arăta „—”
+      warn.style.display = "none";
+      warn.textContent = "";
+      return null;
+    }
+
+    let n = parseInt(raw, 10);
     if (!Number.isFinite(n) || n < 1) n = 1;
-
     if (n > maxP) {
       n = maxP;
       warn.style.display = "block";
-      warn.textContent = `Formatul ${format.value} permite maximum ${maxP} persoane. Am setat automat numărul la ${maxP}.`;
+      warn.textContent = `Formatul ${format.value} permite maximum ${maxP} persoane.`;
     } else {
       warn.style.display = "none";
       warn.textContent = "";
     }
 
-    // scrie valoarea finală în input
     pers.value = String(n);
     return n;
   }
 
-  function compute() {
-    const n = clampPeople();
+  function compute(liveTyping = false) {
+    const maxP = setMinMaxForPeople();
 
-    const col = culoare.value; // bw / color
+    // dacă tastează și e gol, nu îl forțăm
+    if (liveTyping && pers.value === "") {
+      total.textContent = "—";
+      breakdown.innerHTML = "• Completează numărul de persoane.";
+      return;
+    }
+
+    // la calcul normal, încercăm să normalizăm
+    const n = liveTyping
+      ? (Number.isFinite(parseInt(pers.value, 10)) ? parseInt(pers.value, 10) : null)
+      : normalizePeopleValue();
+
+    if (n === null) {
+      total.textContent = "—";
+      breakdown.innerHTML = "• Completează numărul de persoane.";
+      return;
+    }
+
+    // dacă userul tastează un număr > max, îl afișăm, dar calculăm ca max (fără să-l rescriem încă)
+    const safeN = Math.max(1, Math.min(n, maxP));
+
+    const col = culoare.value;
     const base = BASE[col];
 
-    // tehnică doar pentru color; pentru alb/negru ignorăm
     techRow.style.display = (col === "color") ? "block" : "none";
     const techAdd = (col === "color") ? TECH_ADD[tech.value] : 0;
 
-    // detaliat: +50% din baza culorii (100/200)
     const detailAdd = detaliat.checked ? (DETAIL_MULT * base) : 0;
 
-    // preț prima persoană = baza + tehnică (doar color) + detaliat
     const firstPerson = base + techAdd + detailAdd;
 
-    // persoane extra: (n-1) * 75% din prețul primei persoane
-    const extraCount = Math.max(0, n - 1);
+    const extraCount = Math.max(0, safeN - 1);
     const extraEach = EXTRA_MULT * firstPerson;
     const extras = extraCount * extraEach;
 
-    // ramă: depinde de format
     const frame = rama.checked ? FRAME_BY_FORMAT[format.value] : 0;
 
     const grand = firstPerson + extras + frame;
-
     total.textContent = fmtMoney(grand);
 
-    // breakdown
     const lines = [];
     lines.push(`Tip lucrare: ${tip.value}`);
     lines.push(`Bază (${col === "bw" ? "alb/negru" : "color"}): ${fmtMoney(base)}`);
     if (col === "color") lines.push(`Tehnică (${tech.options[tech.selectedIndex].text}): +${fmtMoney(techAdd)}`);
     if (detaliat.checked) lines.push(`Detaliat: +${fmtMoney(detailAdd)} (50% din bază)`);
     lines.push(`Prima persoană: ${fmtMoney(firstPerson)}`);
-
-    if (extraCount > 0) {
-      lines.push(`Persoane extra: ${extraCount} × ${fmtMoney(extraEach)} = ${fmtMoney(extras)}`);
-    } else {
-      lines.push(`Persoane extra: 0`);
-    }
-
+    if (extraCount > 0) lines.push(`Persoane extra: ${extraCount} × ${fmtMoney(extraEach)} = ${fmtMoney(extras)}`);
+    else lines.push(`Persoane extra: 0`);
     if (rama.checked) lines.push(`Ramă (${format.value}): +${fmtMoney(frame)}`);
 
     breakdown.innerHTML = lines.map(s => `• ${s}`).join("<br>");
@@ -211,12 +230,14 @@
     detaliat.checked = false;
     rama.checked = false;
     tech.value = "digital";
-    compute();
+    warn.style.display = "none";
+    warn.textContent = "";
+    compute(false);
   }
 
   function copySummary() {
     const col = culoare.value === "bw" ? "alb/negru" : "color";
-    const n = parseInt(pers.value, 10);
+    const n = parseInt(pers.value, 10) || 1;
     const techText = (culoare.value === "color") ? tech.options[tech.selectedIndex].text : "creion (alb/negru)";
     const msg =
 `Estimare comandă:
@@ -234,15 +255,20 @@
       const old = btn.textContent;
       btn.textContent = "Copiat!";
       setTimeout(() => btn.textContent = old, 900);
-    }).catch(() => {
-      alert(msg);
-    });
+    }).catch(() => alert(msg));
   }
 
-  [tip, culoare, format, pers, detaliat, rama, tech].forEach(x => {
-    x.addEventListener("change", compute);
-    x.addEventListener("input", compute);
+  // schimbări de select / checkbox: recalc complet (și normalize people dacă e cazul)
+  [tip, culoare, format, detaliat, rama, tech].forEach(x => {
+    x.addEventListener("change", () => compute(false));
   });
+
+  // pentru input persoane:
+  // - la tastare: calcul live fără să rescrie valoarea (important pt mobil)
+  pers.addEventListener("input", () => compute(true));
+  // - când user termină (iese din câmp sau confirmă): normalize + calc
+  pers.addEventListener("change", () => compute(false));
+  pers.addEventListener("blur", () => compute(false));
 
   el("reset").addEventListener("click", resetAll);
   el("copy").addEventListener("click", copySummary);
